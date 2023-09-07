@@ -10,7 +10,7 @@
   "scripts": {
     "build": "npx tsc",
     "start": "node dist/index.js",
-    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\"",
+    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/server.js\"",
     "prepare": "husky install"
   },
   "lint-staged": {
@@ -30,6 +30,7 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
+    "chalk": "^5.3.0",
     "mysql": "^2.18.1"
   }
 }
