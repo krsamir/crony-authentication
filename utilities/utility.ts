@@ -1,3 +1,7 @@
+import chalk from "chalk";
+import { log } from "../loggers/index.js";
+import Messages from "../loggers/messages.js";
+
 export const transformJSON = (value: unknown) =>
   JSON.parse(JSON.stringify(value));
 
@@ -30,6 +34,7 @@ const COLUMNS = [
 export const validateColumns = (
   arr: IColumns[],
   aliases: IMandatoryFields,
+  logsFlag: boolean,
 ): IMandatoryFields => {
   const mandatoryColumns = Object.fromEntries(
     COLUMNS.map((keys) => {
@@ -48,9 +53,8 @@ export const validateColumns = (
   const fields = arr.map(({ Field }) => Field?.toLowerCase());
   const result = validFields.every((val) => fields.includes(val as string));
   if (!result) {
-    throw Error(
-      `Table should have following mandatory columns. ${validFields}. Please add and then proceed. You can also alias column name if your column name is different.`,
-    );
+    throw Error(Messages.COLUMNS_NOT_PRESENT(validFields));
   }
+  logsFlag && log(chalk.green(Messages.REQUIRED_COLUMNS_PRESNT));
   return mandatoryColumns;
 };

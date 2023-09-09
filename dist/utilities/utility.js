@@ -1,3 +1,6 @@
+import chalk from "chalk";
+import { log } from "../loggers/index.js";
+import Messages from "../loggers/messages.js";
 export var transformJSON = function (value) {
     return JSON.parse(JSON.stringify(value));
 };
@@ -10,7 +13,7 @@ var COLUMNS = [
     "expiry",
     "isactive",
 ];
-export var validateColumns = function (arr, aliases) {
+export var validateColumns = function (arr, aliases, logsFlag) {
     var mandatoryColumns = Object.fromEntries(COLUMNS.map(function (keys) {
         return Object.entries(aliases).map(function (_a) {
             var key = _a[0], value = _a[1];
@@ -32,7 +35,8 @@ export var validateColumns = function (arr, aliases) {
     });
     var result = validFields.every(function (val) { return fields.includes(val); });
     if (!result) {
-        throw Error("Table should have following mandatory columns. ".concat(validFields, ". Please add and then proceed. You can also alias column name if your column name is different."));
+        throw Error(Messages.COLUMNS_NOT_PRESENT(validFields));
     }
+    logsFlag && log(chalk.green(Messages.REQUIRED_COLUMNS_PRESNT));
     return mandatoryColumns;
 };

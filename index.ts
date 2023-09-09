@@ -7,6 +7,7 @@ import {
   transformJSON,
   validateColumns,
 } from "./utilities/utility.js";
+import Messages from "./loggers/messages.js";
 interface IAuth extends ConnectionConfig {
   connectionLog?: boolean;
   tableName: string;
@@ -27,18 +28,16 @@ const auth = async ({
   try {
     if (connectionLog) {
       await dbInstance.query("select 1+1 as sum");
-      log(
-        `Database connected successfully. Timestamp: ${new Date().toUTCString()}`,
-      );
+      log(chalk.green(Messages.DATABASE_CONNECTED));
     }
     if (tableName === "") {
-      log(chalk.red("Please provide table name which stores user details."));
+      log(chalk.red(Messages.TABLE_NOT_PRESENT));
     } else {
       await dbInstance.query(`select * from ${tableName}`);
-      logsFlag && log(chalk.green("Table exists."));
+      logsFlag && log(chalk.green(Messages.TABLE_PRESENT));
 
       const data = await dbInstance.query(`show columns from ${tableName}`);
-      validateColumns(transformJSON(data), aliases);
+      validateColumns(transformJSON(data), aliases, logsFlag);
     }
   } catch (e) {
     error(e);

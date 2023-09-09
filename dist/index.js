@@ -60,6 +60,7 @@ import chalk from "chalk";
 import Database from "./database.js";
 import { error, log } from "./loggers/index.js";
 import { transformJSON, validateColumns, } from "./utilities/utility.js";
+import Messages from "./loggers/messages.js";
 var auth = function (_a) { return __awaiter(void 0, void 0, void 0, function () {
     var logsFlag, dbInstance, data, e_1;
     var _b = _a.connectionLog, connectionLog = _b === void 0 ? true : _b, _c = _a.tableName, tableName = _c === void 0 ? "" : _c, _d = _a.disableLogs, disableLogs = _d === void 0 ? false : _d, _e = _a.aliases, aliases = _e === void 0 ? {} : _e, config = __rest(_a, ["connectionLog", "tableName", "disableLogs", "aliases"]);
@@ -75,20 +76,20 @@ var auth = function (_a) { return __awaiter(void 0, void 0, void 0, function () 
                 return [4 /*yield*/, dbInstance.query("select 1+1 as sum")];
             case 2:
                 _f.sent();
-                log("Database connected successfully. Timestamp: ".concat(new Date().toUTCString()));
+                log(chalk.green(Messages.DATABASE_CONNECTED));
                 _f.label = 3;
             case 3:
                 if (!(tableName === "")) return [3 /*break*/, 4];
-                log(chalk.red("Please provide table name which stores user details."));
+                log(chalk.red(Messages.TABLE_NOT_PRESENT));
                 return [3 /*break*/, 7];
             case 4: return [4 /*yield*/, dbInstance.query("select * from ".concat(tableName))];
             case 5:
                 _f.sent();
-                logsFlag && log(chalk.green("Table exists."));
+                logsFlag && log(chalk.green(Messages.TABLE_PRESENT));
                 return [4 /*yield*/, dbInstance.query("show columns from ".concat(tableName))];
             case 6:
                 data = _f.sent();
-                validateColumns(transformJSON(data), aliases);
+                validateColumns(transformJSON(data), aliases, logsFlag);
                 _f.label = 7;
             case 7: return [3 /*break*/, 9];
             case 8:

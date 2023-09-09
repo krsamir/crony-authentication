@@ -16,5 +16,5 @@ export interface IMandatoryFields {
     expiry?: string;
     isactive?: boolean;
 }
-export declare const validateColumns: (arr: IColumns[], aliases: IMandatoryFields) => IMandatoryFields;
+export declare const validateColumns: (arr: IColumns[], aliases: IMandatoryFields, logsFlag: boolean) => IMandatoryFields;
 export {};
