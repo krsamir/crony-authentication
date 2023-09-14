@@ -41,7 +41,7 @@ const auth = Auth({
 
 #### For renaming fields as per your requirement you can use aliases fields and rename it accordingly.
 
-## Get Final columns object after aliasing
+#### Get Final columns object after aliasing
 
 ```columns
   try {
