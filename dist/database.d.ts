@@ -1,17 +1,26 @@
 import { ConnectionConfig, QueryFunction } from "mysql";
-interface IDatabaseConfig extends ConnectionConfig {
+import { IMandatoryFields } from "./utilities/utility.js";
+interface IIntializeTable {
+    connectionLog?: boolean;
+    tableName: string;
+    disableLogs?: boolean;
+    aliases?: IMandatoryFields;
+}
+interface IDatabaseConfig extends ConnectionConfig, IIntializeTable {
 }
 interface IConnection {
     query: QueryFunction;
 }
 declare class Database {
     connection: IConnection;
-    constructor({ host, user, database, password, ...others }: IDatabaseConfig);
+    columns: Promise<IMandatoryFields | undefined>;
+    constructor({ host, user, database, password, tableName, aliases, disableLogs, connectionLog, ...others }: IDatabaseConfig);
     /**
      *
      * @param querString pass mysql query as argument
      * @returns
      */
-    query(querString: string): Promise<unknown>;
+    private query;
+    private initializeDatabase;
 }
 export default Database;

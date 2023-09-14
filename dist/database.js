@@ -9,6 +9,42 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 var __rest = (this && this.__rest) || function (s, e) {
     var t = {};
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
@@ -21,11 +57,21 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 import mysql from "mysql";
+import { transformJSON, validateColumns, } from "./utilities/utility.js";
+import chalk from "chalk";
+import Messages from "./loggers/messages.js";
+import { error, log } from "./loggers/index.js";
 var Database = /** @class */ (function () {
     function Database(_a) {
-        var host = _a.host, user = _a.user, database = _a.database, password = _a.password, others = __rest(_a, ["host", "user", "database", "password"]);
+        var _b = _a.host, host = _b === void 0 ? "" : _b, _c = _a.user, user = _c === void 0 ? "" : _c, _d = _a.database, database = _d === void 0 ? "" : _d, _e = _a.password, password = _e === void 0 ? "" : _e, _f = _a.tableName, tableName = _f === void 0 ? "" : _f, aliases = _a.aliases, disableLogs = _a.disableLogs, connectionLog = _a.connectionLog, others = __rest(_a, ["host", "user", "database", "password", "tableName", "aliases", "disableLogs", "connectionLog"]);
         this.connection = {};
         this.connection = mysql.createConnection(__assign({ host: host, user: user, database: database, password: password }, others));
+        this.columns = this.initializeDatabase({
+            tableName: tableName,
+            aliases: aliases,
+            connectionLog: connectionLog,
+            disableLogs: disableLogs,
+        });
     }
     /**
      *
@@ -41,6 +87,45 @@ var Database = /** @class */ (function () {
                 }
                 else {
                     resolve(result);
+                }
+            });
+        });
+    };
+    Database.prototype.initializeDatabase = function (_a) {
+        var _b = _a.tableName, tableName = _b === void 0 ? "" : _b, _c = _a.aliases, aliases = _c === void 0 ? {} : _c, _d = _a.disableLogs, disableLogs = _d === void 0 ? false : _d, _e = _a.connectionLog, connectionLog = _e === void 0 ? true : _e;
+        return __awaiter(this, void 0, void 0, function () {
+            var logsFlag, data, e_1;
+            return __generator(this, function (_f) {
+                switch (_f.label) {
+                    case 0:
+                        logsFlag = !disableLogs;
+                        _f.label = 1;
+                    case 1:
+                        _f.trys.push([1, 8, , 9]);
+                        if (!connectionLog) return [3 /*break*/, 3];
+                        return [4 /*yield*/, this.query("select 1+1 as sum")];
+                    case 2:
+                        _f.sent();
+                        log(chalk.green(Messages.DATABASE_CONNECTED));
+                        _f.label = 3;
+                    case 3:
+                        if (!(tableName === "")) return [3 /*break*/, 4];
+                        log(chalk.red(Messages.TABLE_NOT_PRESENT));
+                        return [3 /*break*/, 7];
+                    case 4: return [4 /*yield*/, this.query("select * from ".concat(tableName))];
+                    case 5:
+                        _f.sent();
+                        logsFlag && log(chalk.green(Messages.TABLE_PRESENT));
+                        return [4 /*yield*/, this.query("show columns from ".concat(tableName))];
+                    case 6:
+                        data = _f.sent();
+                        return [2 /*return*/, validateColumns(transformJSON(data), aliases, logsFlag)];
+                    case 7: return [3 /*break*/, 9];
+                    case 8:
+                        e_1 = _f.sent();
+                        error(e_1);
+                        return [3 /*break*/, 9];
+                    case 9: return [2 /*return*/];
                 }
             });
         });

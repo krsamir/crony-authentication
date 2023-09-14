@@ -6,5 +6,8 @@ interface IAuth extends ConnectionConfig {
     disableLogs?: boolean;
     aliases?: IMandatoryFields;
 }
-declare const auth: ({ connectionLog, tableName, disableLogs, aliases, ...config }: IAuth) => Promise<void>;
+interface IAuthReturnTypes {
+    columns: Promise<IMandatoryFields | undefined>;
+}
+declare const auth: ({ connectionLog, tableName, disableLogs, aliases, ...config }: IAuth) => IAuthReturnTypes;
 export default auth;
