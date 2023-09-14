@@ -26,8 +26,8 @@ export var validateColumns = function (arr, aliases, logsFlag) {
         });
     }));
     var validFields = Object.entries(mandatoryColumns).map(function (_a) {
-        var value = _a[1];
-        return value;
+        var key = _a[0];
+        return key;
     });
     var fields = arr.map(function (_a) {
         var Field = _a.Field;
@@ -40,3 +40,4 @@ export var validateColumns = function (arr, aliases, logsFlag) {
     logsFlag && log(chalk.green(Messages.REQUIRED_COLUMNS_PRESNT));
     return mandatoryColumns;
 };
+//# sourceMappingURL=utility.js.map

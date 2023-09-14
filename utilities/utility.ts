@@ -47,9 +47,7 @@ export const validateColumns = (
       });
     }),
   );
-  const validFields = Object.entries(mandatoryColumns).map(
-    ([, value]) => value,
-  );
+  const validFields = Object.entries(mandatoryColumns).map(([key]) => key);
   const fields = arr.map(({ Field }) => Field?.toLowerCase());
   const result = validFields.every((val) => fields.includes(val as string));
   if (!result) {

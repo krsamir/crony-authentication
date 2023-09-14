@@ -48,3 +48,4 @@ var Database = /** @class */ (function () {
     return Database;
 }());
 export default Database;
+//# sourceMappingURL=database.js.map

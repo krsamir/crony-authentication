@@ -89,7 +89,7 @@ var auth = function (_a) { return __awaiter(void 0, void 0, void 0, function () 
                 return [4 /*yield*/, dbInstance.query("show columns from ".concat(tableName))];
             case 6:
                 data = _f.sent();
-                validateColumns(transformJSON(data), aliases, logsFlag);
+                log(validateColumns(transformJSON(data), aliases, logsFlag));
                 _f.label = 7;
             case 7: return [3 /*break*/, 9];
             case 8:
@@ -101,3 +101,4 @@ var auth = function (_a) { return __awaiter(void 0, void 0, void 0, function () 
     });
 }); };
 export default auth;
+//# sourceMappingURL=index.js.map

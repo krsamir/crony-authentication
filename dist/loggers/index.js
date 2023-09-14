@@ -5,3 +5,4 @@ var error = function (msg) {
     return log(chalk.red(util.inspect(msg, { colors: true })));
 };
 export { log, error };
+//# sourceMappingURL=index.js.map

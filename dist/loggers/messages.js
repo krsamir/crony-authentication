@@ -7,3 +7,4 @@ Messages.COLUMNS_NOT_PRESENT = function (validFields) {
     return "Table should have following mandatory columns. ".concat(validFields, ". Please add and then proceed. You can also alias column name if your column name is different.");
 };
 export default Messages;
+//# sourceMappingURL=messages.js.map

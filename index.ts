@@ -37,7 +37,7 @@ const auth = async ({
       logsFlag && log(chalk.green(Messages.TABLE_PRESENT));
 
       const data = await dbInstance.query(`show columns from ${tableName}`);
-      validateColumns(transformJSON(data), aliases, logsFlag);
+      log(validateColumns(transformJSON(data), aliases, logsFlag));
     }
   } catch (e) {
     error(e);
