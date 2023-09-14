@@ -11,7 +11,11 @@
     "build": "npx tsc",
     "start": "node dist/index.js",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/server.js\"",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "patch": "npm version patch",
+    "minor": "npm version minor",
+    "major": "npm version major",
+    "publish": "npm publish"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown",
